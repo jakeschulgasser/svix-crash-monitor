@@ -62,9 +62,14 @@ def svix_squared(cdf):
     0.0401
     """
     ## TODO: Implement this function as specified in the docstring above.
-    raise NotImplementedError(
-        "Implement svix_squared (see HOMEWORK INSTRUCTIONS at the top of this file)"
-    )
+    # The risk-neutral CDF is the strike slope of the discounted call curve,
+    # Q(k) = 1 + R_f * dc/dk, so the second moment of the gross return is
+    # E[R^2] = 2 * integral_0^inf x * (1 - Q(x)) dx. Extend the left tail to
+    # x = 0, where Q(0) = 0, and integrate the resulting curve.
+    grid = np.concatenate(([0.0], cdf.grid))
+    q = np.concatenate(([0.0], 1.0 + cdf.forward * np.gradient(cdf.call_grid, cdf.grid)))
+    mean_sq = 2.0 * np.trapezoid(grid * (1.0 - q), grid)
+    return float((mean_sq / cdf.forward**2 - 1.0) / cdf.maturity_years)
 
 
 def interpolate_variance(svix2_near, tau_near, svix2_far, tau_far, horizon_years=HORIZON_DAYS / 365.0):

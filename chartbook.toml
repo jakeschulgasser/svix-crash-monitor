@@ -23,9 +23,10 @@ description = "From settlement prices to the simple variance swap rate, the risk
 path = "_output/02_svix_and_crash_probability_ipynb.ipynb"
 
 
-# TODO: Register the monitor notebook, `03_daily_monitor_ipynb`, following
-# the two entries above: a name, a description, and the path of the executed
-# notebook that `doit` leaves in `_output/`.
+[notebooks.03_daily_monitor_ipynb]
+name = "Daily Monitor"
+description = "The daily SVIX and crash-probability monitor for the S&P 500, rebuilt from the latest settlement session and published to the monitor page."
+path = "_output/03_daily_monitor_ipynb.ipynb"
 
 
 [notebooks.04_single_name_crash_bounds_ipynb]
@@ -53,13 +54,13 @@ window in the settings again when it changes; `doit latest` pulls the most
 recent session."""
 
 
-# TODO: Register the monitor's history as `[dataframes.svix_monitor_history]`,
-# following the entry above. It is the CSV in `_output/` that
-# `src/monitor.py` writes, and that the deploy workflow keeps on the
-# `monitor-history` branch. Document it: a name, a description, the path,
-# which column holds the date (`date_col`), how it is produced, and what a
-# reader needs to know (`docs`). The chart below refers to this entry by
-# name, so the site does not build until it exists.
+[dataframes.svix_monitor_history]
+name = "SVIX Monitor History"
+description = "Daily rows of the 30-day SVIX and S&P 500 crash-probability monitor, appended by src/monitor.py from the latest Databento settlements and FRED series."
+path = "_output/svix_monitor_history.csv"
+date_col = "date"
+pull_method = "src/monitor.py, run by the daily update and the full backfill from the settings window"
+docs = """The history is the CSV behind the daily monitor chart. Each row contains the date, the 30-day SVIX estimate, the VIX level, and the implied probability of a 20% market drop under the risk-neutral, log-investor, and power-utility views. The deploy workflow keeps a copy of this file on the `monitor-history` branch and republishes the monitor page from it each morning."""
 
 
 [charts]
